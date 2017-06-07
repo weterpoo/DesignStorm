@@ -1,0 +1,25 @@
+{
+  "name": "designstorm",
+  "version": "1.0.0",
+  "description": "Wow, Capital One is great. Prizes pls",
+  "main": "index.js",
+  "dependencies": {
+    "ejs": "^2.5.6",
+    "express": "^4.15.3",
+    "socket.io": "^2.0.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/weterpoo/DesignStorm.git"
+  },
+  "author": "Will, Teddy, Peter, Kenan, Quinn",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/weterpoo/DesignStorm/issues"
+  },
+  "homepage": "https://github.com/weterpoo/DesignStorm#readme"
+}
