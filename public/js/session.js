@@ -1,4 +1,5 @@
 var socket = io();
+var COLOR = "red";
 
 function formatTime(minutes, seconds) {
   str = minutes.toString() + ":";
@@ -18,20 +19,18 @@ $(function () {
     if (inp == "") {
       return false;
     }
-    socket.emit("idea", $("#idea_field").val());
+    socket.emit("problemIdea", $("#idea_field").val());
     $("#idea_field").val("");
     return false;
   });
 
   socket.on("update", function (msg) {
-    var COLOR = "blue";
-
     $("#ideas").append(
       $("<li class='card'>").append(
         $('<div id="cont-r">').append(
           $('<div id = "colorBar"></div>').attr('style','background-color:'+COLOR+';')
         ).append(
-          $('<div id = "textBox">').text(msg)
+          $('<div id = "textBox">').text(msg.idea)
         )
       )
     );
@@ -51,4 +50,17 @@ $(function () {
     return false;
   });
 
+  socket.on("init", function (msg) {
+    for (var i = 0; i < msg.length; i++) {
+      $("#ideas").append(
+        $("<li class='card'>").append(
+          $('<div id="cont-r">').append(
+            $('<div id = "colorBar"></div>').attr('style','background-color:'+COLOR+';')
+          ).append(
+            $('<div id = "textBox">').text(msg[i].idea)
+          )
+        )
+      );
+    }
+  });
 });

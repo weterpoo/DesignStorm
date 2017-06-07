@@ -1,12 +1,9 @@
 var express = require("express");
 var app = express();
-// var favicon = require('serve-favicon');
-
-var port = process.env.PORT || 8080;
-
+var port = 8080;
 
 app.use(express.static("public"));
-// app.use(favicon(__dirname + '/favicon.ico'));
+
 app.set("view engine", "ejs");
 
 app.get("/", function(req, res) {
@@ -22,7 +19,7 @@ app.get("/session", function(req, res) {
 });
 
 //start server
-var server = app.listen(port, function() {
+var server = app.listen(port, function () {
   console.log("server started");
 });
 
@@ -30,15 +27,20 @@ var server = app.listen(port, function() {
 var io = require('socket.io')(server);
 
 var time = 15;
+var count = 0;
+var problemIdeas = [];
+var solutionIdeas = [];
+var isProblems = true;
 
-io.on("connection", function(socket) {
+io.on("connection", function (socket) {
+  io.emit("init", isProblems ? problemIdeas : solutionIdeas);
+
   console.log("client connected");
-  socket.on("hello world", function() {
-    console.log("hey!");
-  });
 
-  socket.on("idea", function (msg) {
-    io.emit("update", msg);
+  socket.on("problemIdea", function (msg) {
+    count += 1;
+    problemIdeas.push({id: count, idea: msg});
+    io.emit("update", {count: count, idea: msg});
   });
 
   socket.on("disconnect", function(client) {
@@ -47,6 +49,6 @@ io.on("connection", function(socket) {
 });
 
 setInterval(function () {
-    io.emit("tick", time);
-    time -= 1;
-  }, 1000);
+  io.emit("tick", time);
+  time -= 1;
+}, 1000);
