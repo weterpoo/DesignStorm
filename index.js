@@ -29,6 +29,8 @@ var server = app.listen(port, function() {
 //socket code
 var io = require('socket.io')(server);
 
+var time = 15;
+
 io.on("connection", function(socket) {
   console.log("client connected");
   socket.on("hello world", function() {
@@ -43,3 +45,8 @@ io.on("connection", function(socket) {
     console.log("disconnected");
   });
 });
+
+setInterval(function () {
+    io.emit("tick", time);
+    time -= 1;
+  }, 1000);
