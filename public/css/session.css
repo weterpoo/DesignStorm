@@ -1,0 +1,36 @@
+li {
+  border: solid thin black;
+  margin:10px;
+  font-family: sans-serif;
+  display: flex;
+  flex-direction: row;
+  max-height: 80px;
+  width: 23%;
+}
+ul {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+div {
+  display: flex;
+  flex-direction: column;
+  flex:1;
+}
+div #cont-r {
+  flex-direction: row;
+}
+.theme {
+  max-width: 25%;
+}
+div #colorBar {
+  width:20px;
+  height:100%;
+  flex: .5;
+  background-color: red;
+}
+div #textBox  {
+  overflow-y:auto;
+  flex: 11;
+
+}

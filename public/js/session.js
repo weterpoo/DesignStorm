@@ -13,6 +13,16 @@ $(function () {
   });
 
   socket.on("update", function (msg) {
-    $("#ideas").append($("<li>").text(msg));
+    var COLOR = "blue";
+
+    $("#ideas").append(
+      $("<li class='card'>").append(
+        $('<div id="cont-r">').append(
+          $('<div id = "colorBar"></div>').attr('style','background-color:'+COLOR+';')
+        ).append(
+          $('<div id = "textBox">').text(msg)
+        )
+      )
+    );
   });
 });
