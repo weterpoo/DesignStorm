@@ -17,6 +17,10 @@ app.get("/create", function(req, res) {
   res.render('create');
 });
 
+app.get("/session", function(req, res) {
+  res.render('session');
+});
+
 //start server
 var server = app.listen(port, function() {
   console.log("server started");
@@ -29,6 +33,10 @@ io.on("connection", function(socket) {
   console.log("client connected");
   socket.on("hello world", function() {
     console.log("hey!");
+  });
+
+  socket.on("idea", function (msg) {
+    io.emit("update", msg);
   });
 
   socket.on("disconnect", function(client) {
