@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Hello World</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="/css/session.css">
+    <link href="https://fonts.googleapis.com/css?family=Lato:300" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+  <body>
+
+    <div id="myProgress">
+      <div id="myBar"></div>
+    </div>
+    <div id="navbar">
+      <img id="navlogo" src="/img/logo-small.png">
+    </div>
+
+    <h2 id="timer"></h2>
+    <div class="container">
+      <ul id="problems"></ul>
+      <div id="ideasDiv">
+        <ul id="ideas">
+        </ul>
+      </div>
+    </div>
+    <div id="bottomBar">
+      <div id="bb">
+        <form id="idea-submission">
+          <input autocomplete="off" disabled type="text" id="idea_field" placeholder="Enter your idea here">
+        </form>
+      </div>
+      <div id="buttonContainer"><a href="#" class="button">DONE</a></div>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+    <script src="js/results.js"></script>
+  </body>
+
+</html>
