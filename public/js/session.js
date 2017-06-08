@@ -1,5 +1,6 @@
 var socket = io();
 var COLOR = "#ff5757";
+console.log()
 
 function formatTime(minutes, seconds) {
   str = minutes.toString() + ":";
@@ -23,7 +24,9 @@ $(function () {
     $("#idea_field").val("");
     return false;
   });
-
+  socket.on("theme", function(theme){
+    $('h3')[0].innerText = theme;
+  });
   socket.on("connect", function () {
     socket.emit("initProblems", socket.id);
   });
@@ -35,27 +38,25 @@ $(function () {
     );
     $(html)[0].scrollIntoView();
   });
+  var max = 3000;
   var isFirstTick = true;
   socket.on("tick", function (msg) {
+    if(isFirstTick){
+      max = msg;
+      isFirstTick = false;
+    }
     if (msg <= 0) {
+      document.getElementById("myBar").style.width ="100%";
       $("#timer").text("Time's up");
       $("#idea_field").prop("disabled", true);
       return false;
     }
     //progress bar code
-
-    if (isFirstTick) {
-      var bar = document.getElementById("myBar");
-      var timeDelta = msg; // ms
-      var id = setInterval(frame, timeDelta);
-      var width = 1;
-      function frame() {
-          if (width <= 100) {
-              width += .1;
-              bar.style.width = width + '%';
-          }
-      }
-      isFirstTick = false;
+    var bar = document.getElementById("myBar");
+    var width = parseInt((1.0-(msg/max))*100)
+    debugger;
+    if (width <= 100) {
+        bar.style.width = width + '%';
     }
 
     var minutes = parseInt(msg / 60);

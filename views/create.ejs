@@ -6,10 +6,30 @@
     <link rel="stylesheet" href="/css/styles.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="js/create.js"></script>
+
   </head>
   <body>
     <div id="container">
       <h1>DesignStorm</h1>
-    </div id="container">
+    </div>
+    <div>
+      <h2>A quick Description</h2>
+      <p>Its as easy as 1.2.3. just put in the time for your group's
+        brainstorming rounds and begin reaping the benefits of DesignStorm!</p>
+    </div>
+    <div class="container" style="align:center;">
+      <h3>Time for each Round</h3>
+      <form id="duration" action="/session" method="get">
+        <span>Min</span>
+        <input form="duration" type="number" id = "min" name="min"  min="0" max="60">
+        <span>Seconds</span>
+        <input form="duration" type="number" id="sec" name="sec" min="0" max="60">
+        <span>Theme of creation</span>
+        <input form="duration" type="text" id="theme" name="theme">
+        <input type="submit" value="Submit">
+      </form>
+    </div>
   </body>
 </html>

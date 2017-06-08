@@ -1,6 +1,6 @@
 var express = require("express");
 var app = express();
-var port = 8080;
+var port = process.env.PORT || 8000;
 
 app.use(express.static("public"));
 
@@ -30,7 +30,10 @@ var server = app.listen(port, function () {
 //socket code
 var io = require('socket.io')(server);
 
-var time = 1 * 15;
+
+
+var time = 15;
+
 var count = 0;
 var problemIdeas = [];
 var solutionIdeas = [];
@@ -44,11 +47,36 @@ var solutionVotes = {};
 var numReadyToBrainstormSolutions = 0;
 
 var numFinishedVotingOnSolutions = 0;
+var timerSet = false;
+var theme = "";
+var timer = {};
+
 
 io.on("connection", function (socket) {
   socket.on("initProblems", function (id) {
     io.to(id).emit("initProblems", isProblems ? problemIdeas : solutionIdeas);
+    io.emit("theme",theme);
   });
+
+  socket.on("duration set", function (duration) {
+    theme = duration.theme;
+    io.emit("theme", theme);
+    time = duration.time;
+    if(!timerSet) {
+      timer = setInterval(function () {
+        io.emit("tick", time);
+        time -= 1;
+
+        if (time < 0) {
+          clearInterval(timer);
+          io.emit("vote");
+        }
+      }, 1000);
+      timerSet=true;
+    }
+
+
+  })
 
   numPeople++;
   console.log("client connected");
@@ -153,13 +181,3 @@ io.on("connection", function (socket) {
     }
   });
 });
-
-var timer = setInterval(function () {
-  io.emit("tick", time);
-  time -= 1;
-
-  if (time < 0) {
-    clearInterval(timer);
-    io.emit("vote");
-  }
-}, 1000);
