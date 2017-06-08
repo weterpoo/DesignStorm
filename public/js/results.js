@@ -177,11 +177,21 @@ $(function () {
 
 
     // pdfmake code
+
+    // Get Date
+    var d = new Date();
+    var day = d.getDate();
+    var month = d.getMonth()+1;
+    var year = d.getFullYear();
+    today = month + '/' + day + '/' year;
+    
     var pdfDoc = {
       content: [
+        {image: 'img/logo.png'}
         {text: 'DesignStorm Session Report\n\n', bold: true, fontSize: 30},
+        today,
 
-        {text: 'Participants:', bold: true, fontSize: 16},
+        {text: '\nParticipants:', bold: true, fontSize: 16},
         session.names,
     
         {text: '\n\nPhase One: Problems', bold: true, fontSize: 14},
