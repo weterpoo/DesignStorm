@@ -196,11 +196,11 @@ $(function () {
     var day = d.getDate();
     var month = d.getMonth()+1;
     var year = d.getFullYear();
-    today = month + '/' + day + '/' year;
-    
+    var today = month + '/' + day + '/' + year;
+
     var pdfDoc = {
       content: [
-        {image: 'img/logo.png'}
+        //{image: 'img/logo.png'},
         {text: 'DesignStorm Session Report\n\n', bold: true, fontSize: 30},
         today,
 
@@ -213,7 +213,10 @@ $(function () {
         {text: '\n\nPhase Two: Solutions', bold: true, fontSize: 14},
         voteTable(session.solutions, ['idea','votes']),
 
-        {text: '\n\nPhase Three: Mission Statement', bold: true, fontSize: 14},
+        {text: '\n\nPhase Three: Features', bold: true, fontSize: 14},
+        voteTable(session.features, ['idea','votes']),
+
+        {text: '\n\nPhase Four: Mission Statement', bold: true, fontSize: 14},
         session.statement
       ]
     }
