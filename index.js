@@ -167,7 +167,7 @@ io.on("connection", function (socket) {
     if (numReadyToBrainstormSolutions == numPeople) {
       console.log(problemWinners);
       io.emit("begin brainstorming solutions", problemWinners);
-      time = 5 * 60;
+      time = 500 * 60;
       console.log("begin the ticking");
       var solutionTimer = setInterval(function () {
         io.emit("tick solutions", time);

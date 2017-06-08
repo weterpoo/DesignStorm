@@ -27,7 +27,7 @@ $(function () {
 
   //put the theme on the top of the page
   socket.on("theme", function(theme){
-    $('h3')[0].innerText = theme;
+    $("h3").text(theme);
   });
 
   //connection settup
@@ -91,10 +91,13 @@ $(function () {
   var num_votes = 0;
   var votes = [];
   socket.on("vote", function () {
+    $("#bb").css("display", "none");
+    $("#buttonContainer").css("display", "inline-block");
     $(".button").click(function (e) {
       e.preventDefault();
       socket.emit("finishedVoting", selected);
       $("span").off();
+      $(".button").off();
     });
 
     console.log("received");

@@ -6,7 +6,7 @@ html, body {
 }
 
 .container {
-  width:1000px;
+  width:700px;
   margin:130px auto 0 auto;
   height:100%;
 }
@@ -14,7 +14,7 @@ html, body {
 .card {
   overflow-x:auto;
   letter-spacing: 0.25px;
-  line-height: 25px;
+  line-height: 40px;
   margin-left:-40px;
 }
 
@@ -51,6 +51,8 @@ input {
   border-style: solid;
   border-color:#e9e9e9;
   border-radius:5px;
+  width: 650px;
+  margin-left: -25px;
 }
 
 #bottomBar {
@@ -66,9 +68,13 @@ input {
 }
 
 #buttonContainer {
-  display:inline-block;
-  margin-left:30px;
-  vertical-align: middle;
+  display:none;
+  margin: 5px;
+}
+
+#submissionWrapper {
+  margin: 0 auto 0 auto;
+  width: 650px;
 }
 
 span:hover {
@@ -84,10 +90,14 @@ span {
   padding:3px;
   transition-duration: 0.25s;
   cursor: pointer;
+  font-size: 2em;
+}
+
+h3 {
+  font-size: 2em;
 }
 
 .button {
-  margin-top:5px;
   background-color:white;
   color:#ff5757;
   padding:5px 40px 5px 40px;
