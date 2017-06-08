@@ -26,17 +26,36 @@ var server = app.listen(port, function () {
 //socket code
 var io = require('socket.io')(server);
 
-var time = 1000;
+var time = 20;
 var count = 0;
 var problemIdeas = [];
 var solutionIdeas = [];
 var isProblems = true;
 var problemVotes = {};
 
+
+var timer = {};
+
+
+
 io.on("connection", function (socket) {
   socket.on("initProblems", function (id) {
     io.to(id).emit("initProblems", isProblems ? problemIdeas : solutionIdeas);
   });
+
+  socket.on("duration set", function (duration) {
+    time = duration;
+    timer = setInterval(function () {
+      io.emit("tick", time);
+      time -= 1;
+
+      if (time < 0) {
+        clearInterval(timer);
+        io.emit("vote");
+      }
+    }, 1000);
+
+  })
 
   console.log("client connected");
 
@@ -58,13 +77,3 @@ io.on("connection", function (socket) {
     }
   });
 });
-
-var timer = setInterval(function () {
-  io.emit("tick", time);
-  time -= 1;
-
-  if (time < 0) {
-    clearInterval(timer);
-    io.emit("vote");
-  }
-}, 1000);

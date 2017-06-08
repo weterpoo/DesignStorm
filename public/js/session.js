@@ -1,5 +1,6 @@
 var socket = io();
 var COLOR = "#ff5757";
+console.log()
 
 function formatTime(minutes, seconds) {
   str = minutes.toString() + ":";
@@ -37,6 +38,8 @@ $(function () {
   });
   var isFirstTick = true;
   socket.on("tick", function (msg) {
+    console.log("tick");
+    console.log(msg);
     if (msg <= 0) {
       $("#timer").text("Time's up");
       $("#idea_field").prop("disabled", true);
