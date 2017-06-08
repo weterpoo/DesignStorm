@@ -1,20 +1,11 @@
-.whiteText {
-  color: white;
+body {
+  color:white;
 }
 #subtitle {
   padding-top: 30px;
   width: 65%;
   margin-left: auto;
   margin-right: auto;
-}
-
-#instructions {
-  color: white;
-  font-size: 80px;
-}
-
-#intro {
-  color: white;
 }
 
 #contents {
