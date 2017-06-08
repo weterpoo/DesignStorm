@@ -26,11 +26,9 @@ var server = app.listen(port, function () {
 //socket code
 var io = require('socket.io')(server);
 
-<<<<<<< HEAD
-var time = 20;
-=======
+
 var time = 15;
->>>>>>> origin/master
+
 var count = 0;
 var problemIdeas = [];
 var solutionIdeas = [];
