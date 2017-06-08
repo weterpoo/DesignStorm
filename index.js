@@ -36,8 +36,8 @@ var isProblems = true;
 var problemVotes = {};
 var numPeople = 0;
 var numFinishedVoting = 0;
-
-
+var timerSet = false;
+var theme = "";
 var timer = {};
 
 
@@ -45,19 +45,26 @@ var timer = {};
 io.on("connection", function (socket) {
   socket.on("initProblems", function (id) {
     io.to(id).emit("initProblems", isProblems ? problemIdeas : solutionIdeas);
+    io.emit("theme",theme);
   });
 
   socket.on("duration set", function (duration) {
-    time = duration;
-    timer = setInterval(function () {
-      io.emit("tick", time);
-      time -= 1;
+    theme = duration.theme;
+    io.emit("theme", theme);
+    time = duration.time;
+    if(!timerSet) {
+      timer = setInterval(function () {
+        io.emit("tick", time);
+        time -= 1;
 
-      if (time < 0) {
-        clearInterval(timer);
-        io.emit("vote");
-      }
-    }, 1000);
+        if (time < 0) {
+          clearInterval(timer);
+          io.emit("vote");
+        }
+      }, 1000);
+      timerSet=true;
+    }
+
 
   })
 

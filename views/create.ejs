@@ -23,9 +23,11 @@
       <h3>Time for each Round</h3>
       <form id="duration" action="/session" method="get">
         <span>Min</span>
-        <input form="duration" type="number" name="min"  min="0" max="60">
+        <input form="duration" type="number" id = "min" name="min"  min="0" max="60">
         <span>Seconds</span>
-        <input form="duration" type="number" name="sec" min="0" max="60">
+        <input form="duration" type="number" id="sec" name="sec" min="0" max="60">
+        <span>Theme of creation</span>
+        <input form="duration" type="text" id="theme" name="theme">
         <input type="submit" value="Submit">
       </form>
     </div>
