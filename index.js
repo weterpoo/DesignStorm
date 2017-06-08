@@ -139,7 +139,7 @@ io.on("connection", function (socket) {
   socket.on("finishedVoting", function (local_selected) {
     numFinishedVoting++;
     console.log("made it");
-    console.log(numPeople, numFinishedVoting);
+    console.log("numPeople", numPeople, "votes", numFinishedVoting);
     if (numPeople == numFinishedVoting) {
       console.log("made it here");
       var temp = [];
@@ -281,7 +281,7 @@ io.on("connection", function (socket) {
     numReadyToBrainstormFeatures++;
 
     // io.emit("genPDF")  //works!!
-    console.log(numPeople);
+    console.log("numPeople", numPeople);
     console.log(numReadyToBrainstormFeatures);
     if (numReadyToBrainstormFeatures == numPeople) {
       io.emit("beginBStormFeatures", solution);
