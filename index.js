@@ -26,29 +26,45 @@ var server = app.listen(port, function () {
 //socket code
 var io = require('socket.io')(server);
 
-var time = 15;
+var time = 10;
 var count = 0;
 var problemIdeas = [];
 var solutionIdeas = [];
 var isProblems = true;
+var problemVotes = {};
 
 io.on("connection", function (socket) {
-  io.emit("init", isProblems ? problemIdeas : solutionIdeas);
+  socket.on("initProblems", function (id) {
+    io.to(id).emit("initProblems", isProblems ? problemIdeas : solutionIdeas);
+  });
 
   console.log("client connected");
 
   socket.on("problemIdea", function (msg) {
     count += 1;
     problemIdeas.push({id: count, idea: msg});
-    io.emit("update", {count: count, idea: msg});
+    io.emit("update", {id: count, idea: msg});
   });
 
-  socket.on("disconnect", function(client) {
+  socket.on("disconnect", function (client) {
     console.log("disconnected");
+  });
+
+  socket.on("castVoteProblems", function (id, amount) {
+    if (problemVotes.id == undefined) {
+      problemVotes.id = 1;
+    } else {
+      problemVotes.id += amount;
+    }
   });
 });
 
-setInterval(function () {
+var timer = setInterval(function () {
   io.emit("tick", time);
   time -= 1;
+
+  if (time < 0) {
+    clearInterval(timer);
+    io.emit("vote");
+  }
 }, 1000);

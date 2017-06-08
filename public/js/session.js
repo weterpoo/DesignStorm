@@ -24,9 +24,13 @@ $(function () {
     return false;
   });
 
+  socket.on("connect", function () {
+    socket.emit("initProblems", socket.id);
+  });
+
   socket.on("update", function (msg) {
     $("#ideas").append(
-      $("<li class='card'>").append(
+      $("<li class='card' id='" + msg.id + "'>").append(
         $('<div id="cont-r">').append(
           $('<div id = "colorBar"></div>').attr('style','background-color:'+COLOR+';')
         ).append(
@@ -65,10 +69,11 @@ $(function () {
     return false;
   });
 
-  socket.on("init", function (msg) {
+  socket.on("initProblems", function (msg) {
+    console.log("I made it");
     for (var i = 0; i < msg.length; i++) {
       $("#ideas").append(
-        $("<li class='card'>").append(
+        $("<li class='card' id='" + msg[i].id + "'>").append(
           $('<div id="cont-r">').append(
             $('<div id = "colorBar"></div>').attr('style','background-color:'+COLOR+';')
           ).append(
@@ -77,5 +82,31 @@ $(function () {
         )
       );
     }
+  });
+
+  var num_votes = 0;
+  var votes = [];
+  socket.on("vote", function () {
+    console.log("received");
+    var cards = $(".card");
+    console.log(cards.length);
+    cards.each(function (index) {
+      $(this).click(function () {
+        var id = $(this).attr("id");
+
+        if (votes.indexOf(id) == -1 && num_votes < 3) {
+          socket.emit("castVoteProblems", id, 1);
+          num_votes++;
+          votes.push(id);
+          console.log("voted");
+        } else if (votes.indexOf(id) != -1) {
+          votes.splice(votes.indexOf(id), 1);
+          num_votes--;
+          socket.emit("castVoteProblems", id, -1);
+        } else if (num_votes >= 3) {
+          console.log("You've already voted three times!");
+        }
+      });
+    });
   });
 });
