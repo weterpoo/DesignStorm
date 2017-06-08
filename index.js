@@ -73,7 +73,7 @@ io.on("connection", function (socket) {
     io.emit("theme",theme);
   });
   socket.on("reset", function (){
-     console.log("i'm in the reset");
+
      count = 0;
 
      problemIdeas = [];
@@ -121,8 +121,6 @@ io.on("connection", function (socket) {
   })
 
   numPeople++;
-  console.log(numPeople);
-  console.log("client connected");
 
   socket.on("problemIdea", function (msg) {
     count++;
@@ -146,12 +144,9 @@ io.on("connection", function (socket) {
 
   socket.on("finishedVoting", function (local_selected) {
     numFinishedVoting++;
-    console.log("made it");
-    console.log("numPeople", numPeople, "votes", numFinishedVoting);
     if (numPeople == numFinishedVoting) {
-      console.log("made it here");
       var temp = [];
-      console.log(problemVotes);
+
       for (var key in problemVotes) {
         if (problemVotes.hasOwnProperty(key)) {
           temp.push([key, problemVotes[key]]);
@@ -168,7 +163,7 @@ io.on("connection", function (socket) {
         if (temp[i] != undefined)
           temp2.push(temp[i][0]);
       }
-      console.log(temp2);
+
       function findIdea(id) {
         for (var i = 0; i < problemIdeas.length; i++) {
           if (id == problemIdeas[i]["id"])
@@ -187,13 +182,13 @@ io.on("connection", function (socket) {
   socket.on("ready to brainstorm solutions", function () {
     numReadyToBrainstormSolutions++;
 
-    console.log(numPeople);
-    console.log(numReadyToBrainstormSolutions);
+
+
     if (numReadyToBrainstormSolutions == numPeople) {
-      console.log(problemWinners);
+
       io.emit("begin brainstorming solutions", problemWinners);
       time = duration_S;
-      console.log("begin the ticking");
+
       var solutionTimer = setInterval(function () {
         io.emit("tick solutions", time);
         time--;
@@ -225,12 +220,10 @@ io.on("connection", function (socket) {
 
   socket.on("finishedSolutions", function () {
     numFinishedVotingOnSolutions++;
-    console.log("----------------------");
-    console.log(numPeople);
-    console.log(numFinishedVotingOnSolutions);
+
     if (numFinishedVotingOnSolutions == numPeople) {
       var temp = [];
-      console.log(solutionVotes);
+
       for (var key in solutionVotes) {
         if (solutionVotes.hasOwnProperty(key)) {
           temp.push([key, solutionVotes[key]]);
@@ -238,15 +231,11 @@ io.on("connection", function (socket) {
       }
 
       temp.sort(function (a, b) { return b[1] - a[1] });
-      console.log("TEMP");
-      console.log(temp)
       var temp = temp[0];
-      console.log("TEMP");
-      console.log(temp)
       var temp2 = [];
 
       temp2.push(temp[0][0]);
-      console.log(temp2);
+
       function findIdea(id) {
         for (var i = 0; i < solutionIdeas.length; i++) {
           if (id == solutionIdeas[i]["id"])
@@ -270,16 +259,11 @@ io.on("connection", function (socket) {
     numReadyToBrainstormFeatures++;
 
     // io.emit("genPDF")  //works!!
-    console.log("numPeople", numPeople);
-    console.log(numReadyToBrainstormFeatures);
     if (numReadyToBrainstormFeatures == numPeople) {
       io.emit("beginBStormFeatures", solution);
-      console.log("solution winner(s)");
-      console.log(solutionWinners);
       var time = duration_S;
       var solution = solutionWinners[0];
       io.emit("load_soln", solution);
-      console.log("Begin ticking!");
       timer = setInterval(function () {
         io.emit("tick_feats", time);
         time -= 1;
@@ -294,8 +278,6 @@ io.on("connection", function (socket) {
 
   // for adding an new feature
   socket.on("featureIdea", function (msg) {
-    console.log("feats idea");
-    console.log(msg);
     count++;
     featureIdeas.push({id: count, idea: msg});
     io.emit("updateFeats", {id: count, idea: msg});
@@ -303,7 +285,6 @@ io.on("connection", function (socket) {
 
 
   socket.on("castVoteFeats", function (id, amount) {
-    console.log("feats vote");
     if (featureVotes[id] == undefined) {
       featureVotes[id] = 1;
     } else {
@@ -313,9 +294,7 @@ io.on("connection", function (socket) {
 
   socket.on("completeFeatVoting", function(){
     numFinishedVotingOnFeatures++;
-    console.log("-----------FEAT VOTING-----------");
-    console.log(numPeople);
-    console.log(numFinishedVotingOnFeatures);
+
     if (numFinishedVotingOnFeatures == numPeople) {
       var temp = [];
 
@@ -335,7 +314,7 @@ io.on("connection", function (socket) {
         if (temp[i] != undefined)
           temp2.push(temp[i][0]);
       }
-      console.log(temp2);
+
       function findIdea(id) {
         for (var i = 0; i < featureIdeas.length; i++) {
           if (id == featureIdeas[i]["id"])
@@ -380,19 +359,11 @@ io.on("connection", function (socket) {
 
         return temp2;
       }
-      console.log(augmentedProblemIdeas);
-      console.log(augmentedSolutionIdeas);
-      console.log(augmentedFeatureIdeas);
 
       var sortedProblemIdeas = sortIdeas(augmentedProblemIdeas);
       var sortedSolutionIdeas = sortIdeas(augmentedSolutionIdeas);
       var sortedFeatureIdeas = sortIdeas(augmentedFeatureIdeas);
 
-      console.log(sortedProblemIdeas );
-      console.log(sortedSolutionIdeas);
-      console.log(sortedFeatureIdeas );
-
-      console.log("about to generate the pdf");
       var pdf_dat = {
         "names": ["Peter","Kenan","Teddy","Will","Quinn"],
         "problems": sortedProblemIdeas,
@@ -401,7 +372,6 @@ io.on("connection", function (socket) {
         "statement": theme
       };
 
-      console.log(pdf_dat);
       io.emit("genPDF", pdf_dat);
     }
   })

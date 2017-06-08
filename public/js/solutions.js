@@ -12,11 +12,9 @@ function formatTime(minutes, seconds) {
 }
 
 $(function () {
-  console.log("hello");
   socket.emit("ready to brainstorm solutions");
 
   socket.on("begin brainstorming solutions", function (winners) {
-    console.log("begin brainstorm");
     for (var i = 0; i < winners.length; i++) {
       $("#problems").append("<li>" + winners[i] + "</li>");
     }
@@ -37,7 +35,6 @@ $(function () {
   });
 
   socket.on("update solutions", function (msg) {
-    console.log("made it here for the last time");
     var html =  $("<li class='card'><div id = 'colorBar'></div><div id = 'textBox'><p><span id='" + msg.id + "'>" + msg.idea + "</span></p></div></li>");
     $("#ideas").append(html);
     $(html)[0].scrollIntoView();
@@ -46,7 +43,6 @@ $(function () {
   var max = 3000;
   var isFirstTick = true;
   socket.on("tick solutions", function (msg) {
-    console.log("ticking");
 
     if(isFirstTick){
       max = msg;
@@ -86,7 +82,6 @@ $(function () {
       $(".button").addClass("disabled");
     });
 
-    console.log("received");
     var cards = $("span");
     cards.each(function (index) {
       $(this).click(function () {
@@ -97,17 +92,16 @@ $(function () {
           num_votes++;
           votes.push(id);
           $(this).addClass("span-selected");
-          console.log("voted");
+
         } else if (votes.indexOf(id) != -1) {
           votes.splice(votes.indexOf(id), 1);
           num_votes--;
           socket.emit("cast vote on solution", id, -1);
           $(this).removeClass("span-selected");
-          console.log("removed");
+
         } else if (num_votes >= 3) {
           alert("You've already voted three times!");
         }
-        console.log(votes);
       });
     });
   });

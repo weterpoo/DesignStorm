@@ -1,6 +1,6 @@
 var socket = io();
 var COLOR = "#ff5757";
-console.log()
+
 
 function formatTime(minutes, seconds) {
   str = minutes.toString() + ":";
@@ -71,16 +71,8 @@ $(function () {
   });
 
   socket.on("initProblems", function (msg) {
-    console.log("I made it");
     for (var i = 0; i < msg.length; i++) {
       $("#ideas").append(
-        // $("<li class='card' id='" + msg[i].id + "'>").append(
-        //   $('<div id="cont-r">').append(
-        //     $('<div id = "colorBar"></div>').attr('style','background-color:'+COLOR+';')
-        //   ).append(
-        //     $('<div id = "textBox">').text(msg[i].idea)
-        //   )
-        // )
         "<li class='card'><div id = 'colorBar'></div><div id = 'textBox'><p><span id='" + msg[i].id + "'>" + msg[i].idea +"</span></p></div></li>"
       );
     }
@@ -101,7 +93,6 @@ $(function () {
       $(".button").addClass("disabled");
     });
 
-    console.log("received");
     var cards = $("span");
     cards.each(function (index) {
       $(this).click(function () {
@@ -118,7 +109,6 @@ $(function () {
           votes.push(id);
           //add class
           $(this).addClass("span-selected");
-          console.log("voted");
 
         } else if (votes.indexOf(id) != -1) {
           //remove the votes
@@ -131,11 +121,9 @@ $(function () {
 
           $(this).removeClass("span-selected");
 
-          console.log("removed");
         } else if (num_votes >= 3) {
           alert("You've already voted three times!");
         }
-        console.log(votes);
       });
     });
   });

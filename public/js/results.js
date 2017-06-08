@@ -1,6 +1,6 @@
 var socket = io();
 var COLOR = "#ff5757";
-console.log()
+
 
 function formatTime(minutes, seconds) {
   str = minutes.toString() + ":";
@@ -66,7 +66,6 @@ $(function () {
   });
 
   socket.on("updateFeats", function(msg){
-    console.log("Feat add!!");
     var html =  $("<li class='card'><div id = 'colorBar'></div><div id = 'textBox'><p><span id='" + msg.id + "'>" + msg.idea + "</span></p></div></li>");
     $("#ideas").append(html);
     $(html)[0].scrollIntoView();
@@ -83,7 +82,6 @@ $(function () {
   var max = 3000;
   var isFirstTick = true;
   socket.on("tick_feats", function (msg) {
-    console.log("tick");
     if(isFirstTick){
       max = msg;
       isFirstTick = false;
@@ -110,7 +108,6 @@ $(function () {
   });
 
   socket.on("initProblems", function (msg) {
-    console.log("I made it");
     for (var i = 0; i < msg.length; i++) {
       $("#ideas").append(
         "<li class='card'><div id = 'colorBar'></div><div id = 'textBox'><p><span id='" + msg[i].id + "'>" + msg[i].idea +"</span></p></div></li>"
@@ -133,7 +130,6 @@ $(function () {
       $(".button").addClass("disabled");
     });
 
-    console.log("received");
     var cards = $("span");
     cards.each(function (index) {
       $(this).click(function () {
@@ -147,8 +143,6 @@ $(function () {
           votes.push(id);
           //add class
           $(this).addClass("span-selected");
-          console.log("voted");
-
         } else if (votes.indexOf(id) != -1) {
           //remove the votes
           votes.splice(votes.indexOf(id), 1);
@@ -158,38 +152,14 @@ $(function () {
 
           $(this).removeClass("span-selected");
 
-          console.log("removed");
         } else if (num_votes >= 3) {
           alert("You've already voted three times!");
         }
-        console.log(votes);
       });
     });
   });
 
   socket.on("genPDF", function (session) {
-    debugger;
-    console.log("pdf testing time");
-
-    // Example text for testing .pdf download
-    // Need to change example to work with real JSON
-    // session = {"names":["Peter","Kenan","Teddy","Will","Quinn"],
-    //         "problems":[
-    //         {problem: "problem1", votes: 1},
-    //         {problem: "problem2", votes: 2},
-    //         {problem: "problem3", votes: 8}
-    //         ],
-    //         "solutions":[
-    //         {solution: "solution1", votes: 5},
-    //         {solution: "solution2", votes: 11},
-    //         {solution: "solution3", votes: 0}
-    //         ],
-    //         "statement":"Convert a JSON to .pdf"
-    // };
-
-    // Need to decide on JSON implementation
-
-
     // pdfmake code
 
     // Get Date
