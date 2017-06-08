@@ -57,7 +57,24 @@ io.on("connection", function (socket) {
     io.to(id).emit("initProblems", isProblems ? problemIdeas : solutionIdeas);
     io.emit("theme",theme);
   });
+  socket.on("reset", function (){
+     count = 0;
+     problemIdeas = [];
+     solutionIdeas = [];
+     isProblems = true;
+     problemVotes = {};
+     numPeople = 0;
+     numFinishedVoting = 0;
+     problemWinners = [];
 
+     solutionVotes = {};
+     numReadyToBrainstormSolutions = 0;
+
+     numFinishedVotingOnSolutions = 0;
+     timerSet = false;
+     theme = "";
+     timer = {};
+  });
   socket.on("duration set", function (duration) {
     theme = duration.theme;
     io.emit("theme", theme);
@@ -97,10 +114,9 @@ io.on("connection", function (socket) {
       problemVotes[id] += amount;
     }
   });
-
-  socket.on("finishedVoting", function () {
+  var selectedText = [];
+  socket.on("finishedVoting", function (local_selected) {
     numFinishedVoting++;
-
     if (numPeople == numFinishedVoting) {
       var temp = [];
       console.log(problemVotes);

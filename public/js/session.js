@@ -58,7 +58,7 @@ $(function () {
     //progress bar code
     var bar = document.getElementById("myBar");
     var width = parseInt((1.0-(msg/max))*100)
-    debugger;
+
     if (width <= 100) {
         bar.style.width = width + '%';
     }
@@ -86,12 +86,14 @@ $(function () {
     }
   });
 
+
+  var selected = [];
   var num_votes = 0;
   var votes = [];
   socket.on("vote", function () {
     $(".button").click(function (e) {
       e.preventDefault();
-      socket.emit("finishedVoting");
+      socket.emit("finishedVoting", selected);
       $("span").off();
     });
 
@@ -99,22 +101,27 @@ $(function () {
     var cards = $("span");
     cards.each(function (index) {
       $(this).click(function () {
+        //grabb useful data
         var id = $(this).attr("id");
-
+        debugger;
+        var idea = $(this).innerText;
         if (votes.indexOf(id) == -1 && num_votes < 3) {
           // cast vote event
           socket.emit("castVoteProblems", id, 1);
           num_votes++;
+          debugger;
+          selected.push(idea);
           votes.push(id);
           //add class
           $(this).addClass("span-selected");
           console.log("voted");
-          
+
         } else if (votes.indexOf(id) != -1) {
           //remove the votes
           votes.splice(votes.indexOf(id), 1);
           num_votes--;
-
+          debugger;
+          selected.splice(selected.indexOf(idea), 1);
           //fire event to castVote
           socket.emit("castVoteProblems", id, -1);
 
@@ -128,7 +135,6 @@ $(function () {
       });
     });
   });
-
   socket.on("move to solutions", function () {
     window.location.href = "/solutions";
   });
