@@ -71,7 +71,8 @@ input {
 
 #buttonContainer {
   display:none;
-  margin: 5px;
+  text-align: center;
+  width:100%;
 }
 
 #submissionWrapper {
