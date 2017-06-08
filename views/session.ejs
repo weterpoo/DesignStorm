@@ -4,17 +4,19 @@
     <title>Hello World</title>
     <meta charset="utf-8">
     <link rel="stylesheet" href="/css/session.css">
+    <link href="https://fonts.googleapis.com/css?family=Lato:300" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1">
   </head>
   <body>
-    <div id="container">
-      <h1>DesignStorm</h1>
+  <div class="container">
+    <div class="container">
+      <h1 id = "title">DesignStorm</h1>
     </div>
     <div id="myProgress">
       <div id="myBar"></div>
     </div>
     <h2 id="timer"></h2>
-    <div id="container">
+    <div class="container">
       <ul id="themes">
         <li class="theme">
           <div id="themeCard">
@@ -23,14 +25,23 @@
           <br>
       </ul>
     </div>
-    <div id="container">
+    <div class="container" id = "middle" style="flex:1;">
       <ul id="ideas">
+        <li class="card">
+          <div id="cont-r">
+            <div id = "colorBar"></div>
+            <div id = "textBox"> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi elementum vehicula diam, eget efficitur velit porta nec. Nullam fermentum dapibus arcu id ornare. Cras quis semper massa. Sed ac ipsum vehicula, ultrices magna at, condimentum metus. Donec hendrerit ultrices sodales. Nunc et velit eu erat tincidunt placerat a sed dolor. Fusce blandit laoreet tellus eu tincidunt. Vestibulum interdum pulvinar ante ac viverra. In id suscipit mi, hendrerit accumsan eros. Integer scelerisque nec neque vel volutpat.</div>
+          </div>
+          <br>
       </ul>
-      <form id="idea-submission">
-        <input autocomplete="off" type="text" id="idea_field" placeholder="Enter your idea here">
-      </form>
     </div>
-    <button>DONE</button>
+  </div>
+  <button>DONE</button>
+  <div class="container" id="bb">
+    <form id="idea-submission">
+      <input autocomplete="off" type="text" id="idea_field" placeholder="Enter your idea here">
+    </form>
+  </div>
     <script src="/socket.io/socket.io.js"></script>
     <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
     <script src="js/session.js"></script>

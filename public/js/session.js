@@ -1,5 +1,5 @@
 var socket = io();
-var COLOR = "red";
+var COLOR = "#ff5757";
 
 function formatTime(minutes, seconds) {
   str = minutes.toString() + ":";
@@ -29,15 +29,17 @@ $(function () {
   });
 
   socket.on("update", function (msg) {
-    $("#ideas").append(
-      $("<li class='card' id='" + msg.id + "'>").append(
+    var html =  $("<li class='card'>" + msg.id + "'>").append(
         $('<div id="cont-r">').append(
           $('<div id = "colorBar"></div>').attr('style','background-color:'+COLOR+';')
         ).append(
           $('<div id = "textBox">').text(msg.idea)
         )
-      )
+      );
+    $("#ideas").append(
+      html
     );
+    $(html)[0].scrollIntoView();
   });
 
   socket.on("tick", function (msg) {
