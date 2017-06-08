@@ -50,6 +50,7 @@ var problemWinners = [];
 var duration_S = 0;
 var solutionVotes = {};
 var numReadyToBrainstormSolutions = 0;
+var numReadyToBrainstormFeatures = 0;
 
 var numFinishedVotingOnSolutions = 0;
 var timerSet = false;
@@ -77,7 +78,7 @@ io.on("connection", function (socket) {
 
      solutionVotes = {};
      numReadyToBrainstormSolutions = 0;
-
+     numReadyToBrainstormFeatures = 0;
      numFinishedVotingOnSolutions = 0;
      timerSet = false;
      theme = "";
@@ -258,6 +259,30 @@ io.on("connection", function (socket) {
     }, 1000);
 
   });
+
+  socket.on("ready to brainstorm features", function () {
+    numReadyToBrainstormFeatures++;
+    // io.emit("genPDF")  //works!!
+    console.log(numPeople);
+    console.log(numReadyToBrainstormFeatures);
+    if (numReadyToBrainstormFeatures == numPeople) {
+      io.emit("begin brainstorming solutions", solution);
+      time = duration_S;
+      console.log("begin the ticking");
+      var featTimer = setInterval(function () {
+        io.emit("tick_feats", time);
+        time--;
+
+        if (time < 0) {
+          clearInterval(featTimer);
+          //io.emit("vote on solutions");
+          io.emit("genPDF")
+        }
+      }, 1000);
+    }
+  });
+
+
   socket.on("castVoteFeats", function (id, amount) {
     if (featureVotes[id] == undefined) {
       featureVotes[id] = 1;
@@ -265,8 +290,10 @@ io.on("connection", function (socket) {
       featureVotes[id] += amount;
     }
   });
+
   socket.on("completeFeatVoting", function(){
-    io.emit("genPDF", winFeatures);
+    var pdfData = {};
+    io.emit("genPDF");
   })
 
 
