@@ -10,8 +10,18 @@ $(function () {
     // get an associative array of just the values.
     var min = parseInt($('input')[0].value);
     var sec = parseInt($('input')[1].value);
+    min = checkNaN(min);
+    sec = checkNaN(sec);
+    alert(min);
     var theme = $('input')[2].value;
     socket.emit("duration set", {'time':min*60+sec, 'theme':theme});
     //win.location.replace("/session");
   });
 });
+
+function checkNaN(x) {
+  if (isNaN(x)) {
+    return 0;
+  }
+  return x;
+}
