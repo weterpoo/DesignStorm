@@ -22,6 +22,11 @@ app.get("/solutions", function (req, res) {
   res.render("solutions");
 });
 
+app.get("/results", function (req, res) {
+  res.render("results");
+});
+
+
 //start server
 var server = app.listen(port, function () {
   console.log("server started");
