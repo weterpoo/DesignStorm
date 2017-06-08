@@ -98,6 +98,7 @@ $(function () {
       socket.emit("finishedVoting", selected);
       $("span").off();
       $(".button").off();
+      $(".button").addClass("disabled");
     });
 
     console.log("received");
@@ -123,7 +124,7 @@ $(function () {
           //remove the votes
           votes.splice(votes.indexOf(id), 1);
           num_votes--;
-          
+
           selected.splice(selected.indexOf(idea), 1);
           //fire event to castVote
           socket.emit("castVoteProblems", id, -1);
