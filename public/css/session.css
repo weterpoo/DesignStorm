@@ -105,8 +105,15 @@ span {
 
 h3 {
   font-weight: 400;
-  font-size: 34px;
+  font-size: 40px;
   letter-spacing: 0.5px;
+  margin-top: 0;
+}
+
+h4 {
+  font-weight: 300;
+  font-size:14px;
+  margin-bottom: -5px;
 }
 
 .button {
