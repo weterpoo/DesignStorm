@@ -40,17 +40,26 @@ var io = require('socket.io')(server);
 var time = 15;
 
 var count = 0;
+
 var problemIdeas = [];
 var solutionIdeas = [];
+var featureIdeas = [];
+
 var isProblems = true;
 var problemVotes = {};
 var numPeople = 0;
 var numFinishedVoting = 0;
+
 var problemWinners = [];
+var featureWinners = [];
+var solutionWinners = [];
+
 var duration_S = 0;
 var solutionVotes = {};
+var featureVotes = {};
 var numReadyToBrainstormSolutions = 0;
 var numReadyToBrainstormFeatures = 0;
+var numFinishedVotingOnFeatures = 0;
 
 var numFinishedVotingOnSolutions = 0;
 var timerSet = false;
@@ -195,7 +204,10 @@ io.on("connection", function (socket) {
     io.emit("update solutions", {id: count, idea: msg});
   });
 
-  socket.on("vote on solution", function (id, amount) {
+  // ---------------- VOTING on SOLUTIONS ----------------
+
+
+  socket.on("cast vote on solution", function (id, amount) {
     if (solutionVotes[id] == undefined) {
       solutionVotes[id] = 1;
     } else {
@@ -218,15 +230,14 @@ io.on("connection", function (socket) {
       }
 
       temp.sort(function (a, b) { return b[1] - a[1] });
-
-      var temp = temp.slice(0, 5);
-
+      console.log("TEMP");
+      console.log(temp)
+      var temp = temp[0];
+      console.log("TEMP");
+      console.log(temp)
       var temp2 = [];
 
-      for (var i = 0; i < 3; i++) {
-        if (temp[i] != undefined)
-          temp2.push(temp[i][0]);
-      }
+      temp2.push(temp[0][0]);
       console.log(temp2);
       function findIdea(id) {
         for (var i = 0; i < solutionIdeas.length; i++) {
@@ -236,54 +247,74 @@ io.on("connection", function (socket) {
       }
 
       for (var i = 0; i < temp2.length; i++) {
-        problemWinners.push(findIdea(temp2[i]));
+        solutionWinners.push(findIdea(temp2[i]));
       }
 
       io.emit("go to results");
     }
   });
 
+
+
   //********************* FOR RESULTS PAGE    **********************
   var winFeatures;
-  socket.on("solutionVotingComplete", function(){
-    //load with the winners
-    io.emit("load_soln", solnWinner);
-    timer = setInterval(function () {
-      io.emit("tick_feats", time);
-      time -= 1;
-
-      if (time < 0) {
-        clearInterval(timer);
-        io.emit("vote_feats");
-      }
-    }, 1000);
-
-  });
+  // NOt used
+  // socket.on("solutionVotingComplete", function(){
+  //   //load with the winners
+  //   console.log("solution winner(s)");
+  //   console.log(solutionWinners);
+  //   var solution = find_best(solutionWinners[0])
+  //   io.emit("load_soln", solution);
+  //   timer = setInterval(function () {
+  //     io.emit("tick_feats", time);
+  //     time -= 1;
+  //
+  //     if (time < 0) {
+  //       clearInterval(timer);
+  //       io.emit("vote_feats");
+  //     }
+  //   }, 1000);
+  //
+  // });
 
   socket.on("ready to brainstorm features", function () {
     numReadyToBrainstormFeatures++;
+
     // io.emit("genPDF")  //works!!
     console.log(numPeople);
     console.log(numReadyToBrainstormFeatures);
     if (numReadyToBrainstormFeatures == numPeople) {
-      io.emit("begin brainstorming solutions", solution);
-      time = duration_S;
-      console.log("begin the ticking");
-      var featTimer = setInterval(function () {
+      io.emit("beginBStormFeatures", solution);
+      console.log("solution winner(s)");
+      console.log(solutionWinners);
+      var time = duration_S;
+      var solution = solutionWinners[0];
+      io.emit("load_soln", solution);
+      console.log("Begin ticking!");
+      timer = setInterval(function () {
         io.emit("tick_feats", time);
-        time--;
+        time -= 1;
 
         if (time < 0) {
-          clearInterval(featTimer);
-          //io.emit("vote on solutions");
-          io.emit("genPDF")
+          clearInterval(timer);
+          io.emit("vote_feats");
         }
       }, 1000);
     }
   });
 
+  // for adding an new feature
+  socket.on("featureIdea", function (msg) {
+    console.log("feats idea");
+    console.log(msg);
+    count++;
+    featureIdeas.push({id: count, idea: msg});
+    io.emit("updateFeats", {id: count, idea: msg});
+  });
+
 
   socket.on("castVoteFeats", function (id, amount) {
+    console.log("feats vote");
     if (featureVotes[id] == undefined) {
       featureVotes[id] = 1;
     } else {
@@ -292,9 +323,96 @@ io.on("connection", function (socket) {
   });
 
   socket.on("completeFeatVoting", function(){
-    var pdfData = {};
-    io.emit("genPDF");
+    numFinishedVotingOnFeatures++;
+    console.log("-----------FEAT VOTING-----------");
+    console.log(numPeople);
+    console.log(numFinishedVotingOnFeatures);
+    if (numFinishedVotingOnFeatures == numPeople) {
+      var temp = [];
+
+      for (var key in featureVotes) {
+        if (featureVotes.hasOwnProperty(key)) {
+          temp.push([key, featureVotes[key]]);
+        }
+      }
+
+      temp.sort(function (a, b) { return b[1] - a[1] });
+
+      var temp = temp;
+
+      var temp2 = [];
+
+      for (var i = 0; i < 3; i++) {
+        if (temp[i] != undefined)
+          temp2.push(temp[i][0]);
+      }
+      console.log(temp2);
+      function findIdea(id) {
+        for (var i = 0; i < featureIdeas.length; i++) {
+          if (id == featureIdeas[i]["id"])
+            return featureIdeas[i]["idea"];
+        }
+      }
+
+      for (var i = 0; i < temp2.length; i++) {
+        featureWinners.push(findIdea(temp2[i]));
+      }
+      // --------- BUILD PDF JSON OBJECT ---------------
+      function augmentIdeas(ideas, votes) {
+        for (var i = 0; i < ideas.length; i++) {
+          var id = ideas[i]["id"];
+          if (votes[id] != undefined) {
+            ideas[i]["votes"] = votes[id];
+          } else {
+            ideas[i]["votes"] = 0;
+          }
+        }
+
+        return ideas;
+      }
+
+      var augmentedProblemIdeas = augmentIdeas(problemIdeas, problemVotes);
+      var augmentedSolutionIdeas = augmentIdeas(solutionIdeas, solutionVotes);
+      var augmentedFeatureIdeas = augmentIdeas(featureIdeas, featureVotes);
+
+      function sortIdeas(ideas) {
+        var temp = [];
+        for (var i = 0; i < ideas.length; i++) {
+          temp.push([ideas[i]["idea"], ideas[i]["votes"]]);
+        }
+
+        temp.sort(function (a, b) { return b[1] - a[1] } );
+
+        var temp2 = []
+
+        for (var i = 0; i < temp.length; i++) {
+          temp2.push({idea: temp[i][0], votes: temp[i][1]});
+        }
+
+        return temp2;
+      }
+      console.log(augmentedProblemIdeas);
+      console.log(augmentedSolutionIdeas);
+      console.log(augmentedFeatureIdeas);
+
+      var sortedProblemIdeas = sortIdeas(augmentedProblemIdeas);
+      var sortedSolutionIdeas = sortIdeas(augmentedSolutionIdeas);
+      var sortedFeatureIdeas = sortIdeas(augmentedFeatureIdeas);
+
+      console.log(sortedProblemIdeas );
+      console.log(sortedSolutionIdeas);
+      console.log(sortedFeatureIdeas );
+
+      console.log("about to generate the pdf");
+      var pdf_dat = {
+        "names": ["Peter","Kenan","Teddy","Will","Quinn"],
+        "problems": sortedProblemIdeas,
+        "solutions": sortedSolutionIdeas,
+        "features": sortedFeatureIdeas,
+      };
+
+      console.log(pdf_dat);
+      io.emit("genPDF", pdf_dat);
+    }
   })
-
-
 });

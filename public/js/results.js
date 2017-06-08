@@ -36,10 +36,10 @@ function voteTable(data, columns) {
       }
     };
 }
-
+var counter = 1;
 //add msg to candidates
 function makeLi(msg){
-  var html =  $("<li class='card'><div id = 'colorBar'></div><div id = 'textBox'><p><span id='" + msg.id + "'>" + msg.idea + "</span></p></div></li>");
+  var html =  $("<li class='card'><div id = 'colorBar'></div><div id = 'textBox'><p><span id='"+counter+"'>" + msg + "</span></p></div></li>");
   $("#ideas").append(
     html
   );
@@ -57,6 +57,7 @@ $(function () {
 
     socket.emit("featureIdea", $("#idea_field").val());
     $("#idea_field").val("");
+    return false;
   });
 
   //put the theme on the top of the page
@@ -64,16 +65,25 @@ $(function () {
     $('h3')[0].innerText = theme;
   });
 
+  socket.on("updateFeats", function(msg){
+    console.log("Feat add!!");
+    var html =  $("<li class='card'><div id = 'colorBar'></div><div id = 'textBox'><p><span id='" + msg.id + "'>" + msg.idea + "</span></p></div></li>");
+    $("#ideas").append(html);
+    $(html)[0].scrollIntoView();
+  });
+
   // WHEN everyone complete load in data
   socket.on("load_soln", function(soln){
-    makeLi(soln);
-    $("input#bb").prop("disabled", false);
+    var html =  $("<li class='card'><div id = 'textBox'><p><span id='prob'>" + soln + "</span></p></div></li>");
+    $("#problems").append(html);
+    $("input#idea_field").prop("disabled", false);
   });
 
   //ticker
   var max = 3000;
   var isFirstTick = true;
-  socket.on("tick_feat", function (msg) {
+  socket.on("tick_feats", function (msg) {
+    console.log("tick");
     if(isFirstTick){
       max = msg;
       isFirstTick = false;
@@ -112,11 +122,14 @@ $(function () {
   var selected = [];
   var num_votes = 0;
   var votes = [];
-  socket.on("vote_feat", function () {
+  socket.on("vote_feats", function () {
+    $("#bb").css("display", "none");
+    $("#buttonContainer").css("display", "inline-block");
     $(".button").click(function (e) {
       e.preventDefault();
-      socket.emit("finishedVoting");
+      socket.emit("completeFeatVoting");
       $("span").off();
+      $(".button").off();
     });
 
     console.log("received");
@@ -153,25 +166,25 @@ $(function () {
     });
   });
 
-  socket.on("genPDF", function () {
-
+  socket.on("genPDF", function (session) {
+    debugger;
     console.log("pdf testing time");
 
     // Example text for testing .pdf download
     // Need to change example to work with real JSON
-    session = {"names":["Peter","Kenan","Teddy","Will","Quinn"],
-            "problems":[
-            {problem: "problem1", votes: 1}, 
-            {problem: "problem2", votes: 2}, 
-            {problem: "problem3", votes: 8}
-            ],
-            "solutions":[
-            {solution: "solution1", votes: 5},
-            {solution: "solution2", votes: 11},
-            {solution: "solution3", votes: 0}
-            ],
-            "statement":"Convert a JSON to .pdf"
-    };
+    // session = {"names":["Peter","Kenan","Teddy","Will","Quinn"],
+    //         "problems":[
+    //         {problem: "problem1", votes: 1},
+    //         {problem: "problem2", votes: 2},
+    //         {problem: "problem3", votes: 8}
+    //         ],
+    //         "solutions":[
+    //         {solution: "solution1", votes: 5},
+    //         {solution: "solution2", votes: 11},
+    //         {solution: "solution3", votes: 0}
+    //         ],
+    //         "statement":"Convert a JSON to .pdf"
+    // };
 
     // Need to decide on JSON implementation
 
@@ -193,15 +206,15 @@ $(function () {
 
         {text: '\nParticipants:', bold: true, fontSize: 16},
         session.names,
-    
+
         {text: '\n\nPhase One: Problems', bold: true, fontSize: 14},
-        voteTable(session.problems, ['problem','votes']),
-      
+        voteTable(session.problems, ['idea','votes']),
+
         {text: '\n\nPhase Two: Solutions', bold: true, fontSize: 14},
-        voteTable(session.solutions, ['solution','votes']),
-      
+        voteTable(session.solutions, ['idea','votes']),
+
         {text: '\n\nPhase Three: Mission Statement', bold: true, fontSize: 14},
-        session.statement 
+        session.statement
       ]
     }
 
