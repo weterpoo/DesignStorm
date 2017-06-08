@@ -143,7 +143,7 @@ io.on("connection", function (socket) {
       problemVotes[id] += amount;
     }
   });
-  var selectedText = [];
+
   socket.on("finishedVoting", function (local_selected) {
     numFinishedVoting++;
     console.log("made it");
@@ -265,25 +265,6 @@ io.on("connection", function (socket) {
 
 
   //********************* FOR RESULTS PAGE    **********************
-  var winFeatures;
-  // NOt used
-  // socket.on("solutionVotingComplete", function(){
-  //   //load with the winners
-  //   console.log("solution winner(s)");
-  //   console.log(solutionWinners);
-  //   var solution = find_best(solutionWinners[0])
-  //   io.emit("load_soln", solution);
-  //   timer = setInterval(function () {
-  //     io.emit("tick_feats", time);
-  //     time -= 1;
-  //
-  //     if (time < 0) {
-  //       clearInterval(timer);
-  //       io.emit("vote_feats");
-  //     }
-  //   }, 1000);
-  //
-  // });
 
   socket.on("ready to brainstorm features", function () {
     numReadyToBrainstormFeatures++;
