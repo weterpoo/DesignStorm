@@ -41,7 +41,7 @@ $(function () {
     );
     $(html)[0].scrollIntoView();
   });
-
+  var isFirstTick = true;
   socket.on("tick", function (msg) {
     if (msg <= 0) {
       $("#timer").text("Time's up");
@@ -49,7 +49,7 @@ $(function () {
       return false;
     }
     //progress bar code
-    var isFirstTick = true;
+
     if (isFirstTick) {
       var bar = document.getElementById("myBar");
       var timeDelta = msg*10; // ms
