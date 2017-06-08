@@ -1,13 +1,24 @@
 var socket = io();
 
+function formatTime(minutes, seconds) {
+  str = minutes.toString() + ":";
+  if (seconds.toString().length == 1) {
+    str += "0" + seconds;
+  } else {
+    str += seconds;
+  }
+
+  return str;
+}
+
 $(function () {
   console.log("hello");
   socket.emit("ready to brainstorm solutions");
 
   socket.on("begin brainstorming solutions", function (winners) {
     console.log("begin brainstorm");
-    for (var i = 0; i < msg.length; i++) {
-      $("#problems").append("<li>" + msg[i] + "</li>");
+    for (var i = 0; i < winners.length; i++) {
+      $("#problems").append("<li>" + winners[i] + "</li>");
     }
 
     $("input").prop("disabled", false);

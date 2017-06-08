@@ -58,12 +58,14 @@ io.on("connection", function (socket) {
     io.emit("theme",theme);
   });
   socket.on("reset", function (){
+     console.log("i'm in the reset");
      count = 0;
      problemIdeas = [];
      solutionIdeas = [];
      isProblems = true;
      problemVotes = {};
-     numPeople = 0;
+     numPeople = 1;
+     console.log(numPeople);
      numFinishedVoting = 0;
      problemWinners = [];
 
@@ -94,6 +96,7 @@ io.on("connection", function (socket) {
   })
 
   numPeople++;
+  console.log(numPeople);
   console.log("client connected");
 
   socket.on("problemIdea", function (msg) {
@@ -105,6 +108,7 @@ io.on("connection", function (socket) {
   socket.on("disconnect", function (client) {
     console.log("disconnected");
     numPeople--;
+    console.log(numPeople);
   });
 
   socket.on("castVoteProblems", function (id, amount) {
@@ -117,7 +121,10 @@ io.on("connection", function (socket) {
   var selectedText = [];
   socket.on("finishedVoting", function (local_selected) {
     numFinishedVoting++;
+    console.log("made it");
+    console.log(numPeople, numFinishedVoting);
     if (numPeople == numFinishedVoting) {
+      console.log("made it here");
       var temp = [];
       console.log(problemVotes);
       for (var key in problemVotes) {
@@ -134,13 +141,13 @@ io.on("connection", function (socket) {
 
       for (var i = 0; i < 5; i++) {
         if (temp[i] != undefined)
-          temp2.push(temp[i][1]);
+          temp2.push(temp[i][0]);
       }
-
+      console.log(temp2);
       function findIdea(id) {
         for (var i = 0; i < problemIdeas.length; i++) {
-          if (id == problemIdeas[i][id])
-            return problemIdeas[i][idea];
+          if (id == problemIdeas[i]["id"])
+            return problemIdeas[i]["idea"];
         }
       }
 
@@ -158,6 +165,7 @@ io.on("connection", function (socket) {
     console.log(numPeople);
     console.log(numReadyToBrainstormSolutions);
     if (numReadyToBrainstormSolutions == numPeople) {
+      console.log(problemWinners);
       io.emit("begin brainstorming solutions", problemWinners);
       time = 5 * 60;
       console.log("begin the ticking");
