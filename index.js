@@ -75,19 +75,27 @@ io.on("connection", function (socket) {
   socket.on("reset", function (){
      console.log("i'm in the reset");
      count = 0;
+
      problemIdeas = [];
      solutionIdeas = [];
+     featureIdeas = [];
+
      isProblems = true;
      problemVotes = {};
      numPeople = 1;
-     console.log(numPeople);
      numFinishedVoting = 0;
-     problemWinners = [];
-     duration_S = 0;
 
+     problemWinners = [];
+     featureWinners = [];
+     solutionWinners = [];
+
+     duration_S = 0;
      solutionVotes = {};
+     featureVotes = {};
      numReadyToBrainstormSolutions = 0;
      numReadyToBrainstormFeatures = 0;
+     numFinishedVotingOnFeatures = 0;
+
      numFinishedVotingOnSolutions = 0;
      timerSet = false;
      theme = "";
