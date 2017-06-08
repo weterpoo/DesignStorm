@@ -33,9 +33,11 @@ $(function () {
 
     socket.emit("solution idea", $("#idea_field").val());
     $("#idea_field").val("");
+    return false;
   });
 
   socket.on("update solutions", function (msg) {
+    console.log("made it here for the last time");
     var html =  $("<li class='card'><div id = 'colorBar'></div><div id = 'textBox'><p><span id='" + msg.id + "'>" + msg.idea + "</span></p></div></li>");
     $("#ideas").append(html);
     $(html)[0].scrollIntoView();
