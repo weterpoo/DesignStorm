@@ -29,13 +29,7 @@ $(function () {
   });
 
   socket.on("update", function (msg) {
-    var html =  $("<li class='card'>" + msg.id + "'>").append(
-        $('<div id="cont-r">').append(
-          $('<div id = "colorBar"></div>').attr('style','background-color:'+COLOR+';')
-        ).append(
-          $('<div id = "textBox">').text(msg.idea)
-        )
-      );
+    var html =  $("<li class='card'><div id = 'colorBar'></div><div id = 'textBox'><p><span>" + msg.idea +"</span></p></div></li>");
     $("#ideas").append(
       html
     );
@@ -75,13 +69,14 @@ $(function () {
     console.log("I made it");
     for (var i = 0; i < msg.length; i++) {
       $("#ideas").append(
-        $("<li class='card' id='" + msg[i].id + "'>").append(
-          $('<div id="cont-r">').append(
-            $('<div id = "colorBar"></div>').attr('style','background-color:'+COLOR+';')
-          ).append(
-            $('<div id = "textBox">').text(msg[i].idea)
-          )
-        )
+        // $("<li class='card' id='" + msg[i].id + "'>").append(
+        //   $('<div id="cont-r">').append(
+        //     $('<div id = "colorBar"></div>').attr('style','background-color:'+COLOR+';')
+        //   ).append(
+        //     $('<div id = "textBox">').text(msg[i].idea)
+        //   )
+        // )
+        "<li class='card'><div id = 'colorBar'></div><div id = 'textBox'><p><span>" + msg[i].idea +"</span></p></div></li>"
       );
     }
   });
