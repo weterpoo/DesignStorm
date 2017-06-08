@@ -202,4 +202,33 @@ io.on("connection", function (socket) {
       io.emit("go to results");
     }
   });
+
+  //********************* FOR RESULTS PAGE    **********************
+  var winFeatures;
+  socket.on("solutionVotingComplete", function(){
+    //load with the winners
+    io.emit("load_soln", solnWinner);
+    timer = setInterval(function () {
+      io.emit("tick_feats", time);
+      time -= 1;
+
+      if (time < 0) {
+        clearInterval(timer);
+        io.emit("vote_feats");
+      }
+    }, 1000);
+
+  });
+  socket.on("castVoteFeats", function (id, amount) {
+    if (featureVotes[id] == undefined) {
+      featureVotes[id] = 1;
+    } else {
+      featureVotes[id] += amount;
+    }
+  });
+  socket.on("completeFeatVoting", function(){
+    io.emit("genPDF", winFeatures);
+  })
+
+
 });

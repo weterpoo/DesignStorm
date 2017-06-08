@@ -40,8 +40,8 @@ $(function () {
   });
 
   // WHEN everyone complete load in data
-  socket.on("load_feat", function(msgs){
-    msgs.forAll(x=>makeLi(x));
+  socket.on("load_soln", function(soln){
+    makeLi(soln);
     $("input#bb").prop("disabled", false);
   });
 
@@ -103,7 +103,7 @@ $(function () {
         var idea = $(this).innerText;
         if (votes.indexOf(id) == -1 && num_votes < 3) {
           // cast vote event
-          socket.emit("castVoteProblems", id, 1);
+          socket.emit("castVoteFeats", id, 1);
           num_votes++;
           votes.push(id);
           //add class
@@ -115,7 +115,7 @@ $(function () {
           votes.splice(votes.indexOf(id), 1);
           num_votes--;
           //fire event to castVote
-          socket.emit("castVoteProblems", id, -1);
+          socket.emit("castVoteFeats", id, -1);
 
           $(this).removeClass("span-selected");
 
@@ -130,6 +130,6 @@ $(function () {
 
   socket.on("genPDF", function () {
     // INSERT PDF GEN CODE HERE - QUINN
-    
+
   });
 });
