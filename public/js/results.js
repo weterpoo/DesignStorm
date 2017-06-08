@@ -75,7 +75,7 @@ $(function () {
   // WHEN everyone complete load in data
   socket.on("load_soln", function(soln){
     var html =  $("<li class='card'><div id = 'textBox'><p><span id='prob'>" + soln + "</span></p></div></li>");
-    $("#problems").append(html);
+    $("#problems").text(soln);
     $("input#idea_field").prop("disabled", false);
   });
 
