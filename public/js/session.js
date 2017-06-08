@@ -117,15 +117,7 @@ $(function () {
     });
   });
 
-  socket.on("moveOn", function (msg) {
-    var ret = [];
-    for (var key in msg) {
-      if (msg.hasOwnProperty(key)) {
-        ret.push(encodeURIComponent(key) + '=' + encodeURIComponent(msg[key]));
-      }
-    }
-    var url = "/solutions?" + ret.join("&");
-
-    window.location.replace(url);
+  socket.on("move to solutions", function () {
+    window.location.href = "/solutions";
   });
 });
