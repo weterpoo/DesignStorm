@@ -42,6 +42,21 @@ $(function () {
       $("#idea_field").prop("disabled", true);
       return false;
     }
+    //progress bar code
+    var isFirstTick = true;
+    if (isFirstTick) {
+      var bar = document.getElementById("myBar");
+      var timeDelta = msg*10; // ms
+      var id = setInterval(frame, timeDelta);
+      var width = 1;
+      function frame() {
+          if (width <= 100) {
+              width++;
+              bar.style.width = width + '%';
+          }
+      }
+      isFirstTick = false;
+    }
 
     var minutes = parseInt(msg / 60);
     var seconds = msg % 60;
