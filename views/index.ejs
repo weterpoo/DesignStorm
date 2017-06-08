@@ -14,10 +14,15 @@
     <div id="container">
       <h2 class="animated fadeInUp">Generate problems and solutions rapidly and collaboratively.</h2>
       <div id="button-div" class="animated fadeInUp">
-        <a class="button" href="/create">Create</a>
+        <a class="button" href="#">Create</a>
       </div>
     </div id="container">
 
   </body>
-
+  <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+  <script>
+    $(".button").click(function () {
+      window.location.replace("/create");
+    });
+  </script>
 </html>

@@ -83,6 +83,7 @@ span:hover {
 span {
   padding:3px;
   transition-duration: 0.25s;
+  cursor: pointer;
 }
 
 .button {
