@@ -18,17 +18,23 @@
     </div>
     <div id = "subtitle" class="animated fadeInUp">
       <div id = "contents">
-        <p id="instructions">Let's get started by calibrating for your personal brainstorming experience!</p>
+        <h2>Let's get started by calibrating for your personal brainstorming experience!</h2>
         <div id = "settings">
-          <p class = "whiteText">Time for each round:</p>
+
           <form id="duration" action="/session" method="get">
             <!-- <span class = "whiteText">Minutes:</span> -->
-            <input form="duration" type="number" class = "inp" id = "min" name="min"  min="0" max="60" placeholder="minutes"><br>
-            <!-- <span class = "whiteText">Seconds</span> -->
-            <input form="duration" type="number" class = "inp" id="sec" name="sec" min="0" max="60" placeholder="seconds"><br>
-            <!-- <span class = "whiteText">Theme of <creation</span> -->
-            <input form="duration" type="text" class = "inp" id="theme" name="theme" placeholder="mission statement"><br>
-            <input class = "button" type="submit" value="Submit">
+            <div class="inputBlock onethird">
+              <h3>Round Duration</h3>
+              <input form="duration" type="number" class = "inp" id = "min" name="min"  min="0" max="60" placeholder="Minutes">
+              <!-- <span class = "whiteText">Seconds</span> -->
+              <input form="duration" type="number" class = "inp" id="sec" name="sec" min="0" max="60" placeholder="Seconds"><br>
+              <!-- <span class = "whiteText">Theme of <creation</span> -->
+            </div>
+            <div class="inputBlock twothirds">
+              <h3>Mission Statement</h3>
+              <input form="duration" type="text" class = "inp" id="theme" name="theme" placeholder="What are you focusing on?"><br>
+            </div>
+            <input class = "button stretch" type="submit" value="Submit">
           </form>
         </div>
       </div>
