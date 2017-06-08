@@ -24,9 +24,13 @@ $(function () {
     $("#idea_field").val("");
     return false;
   });
+
+  //put the theme on the top of the page
   socket.on("theme", function(theme){
     $('h3')[0].innerText = theme;
   });
+
+  //connection settup
   socket.on("connect", function () {
     socket.emit("initProblems", socket.id);
   });
@@ -98,16 +102,24 @@ $(function () {
         var id = $(this).attr("id");
 
         if (votes.indexOf(id) == -1 && num_votes < 3) {
+          // cast vote event
           socket.emit("castVoteProblems", id, 1);
           num_votes++;
           votes.push(id);
+          //add class
           $(this).addClass("span-selected");
           console.log("voted");
+          
         } else if (votes.indexOf(id) != -1) {
+          //remove the votes
           votes.splice(votes.indexOf(id), 1);
           num_votes--;
+
+          //fire event to castVote
           socket.emit("castVoteProblems", id, -1);
+
           $(this).removeClass("span-selected");
+
           console.log("removed");
         } else if (num_votes >= 3) {
           alert("You've already voted three times!");
