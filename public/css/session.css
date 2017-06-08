@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Roboto:400,100');
+@import url('https://fonts.googleapis.com/css?family=Roboto:400,100,300');
 
 html, body {
   font-family: 'Roboto', sans-serif;
@@ -9,7 +9,7 @@ html, body {
 
 .container {
   width:700px;
-  margin:130px auto 0 auto;
+  margin:150px auto 0 auto;
   height:100%;
 }
 
@@ -18,10 +18,6 @@ html, body {
   letter-spacing: 0.25px;
   line-height: 40px;
   margin-left:-40px;
-}
-
-p {
-  color:#555555;
 }
 
 #ideasDiv {
@@ -51,10 +47,13 @@ p {
 }
 
 input {
-  padding:7px;
+  padding:12px;
+  font-size: 14px;
   border-style: solid;
   border-color:#e9e9e9;
-  border-radius:5px;
+  border-width:1px;
+  border-radius: 2px;
+  box-sizing: border-box;
   width: 650px;
   margin-left: -25px;
 }
@@ -91,15 +90,23 @@ span:hover {
   color:#ff5757;
 }
 
+p {
+  margin:0;
+  font-size: 12px;
+  font-weight: 300;
+}
+
 span {
-  padding:3px;
+  padding:5px;
   transition-duration: 0.25s;
   cursor: pointer;
   font-size: 2em;
 }
 
 h3 {
-  font-size: 2em;
+  font-weight: 400;
+  font-size: 34px;
+  letter-spacing: 0.5px;
 }
 
 .button {
