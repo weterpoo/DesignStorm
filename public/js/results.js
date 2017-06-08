@@ -130,6 +130,7 @@ $(function () {
       socket.emit("completeFeatVoting");
       $("span").off();
       $(".button").off();
+      $(".button").addClass("disabled");
     });
 
     console.log("received");

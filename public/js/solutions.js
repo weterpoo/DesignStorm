@@ -83,6 +83,7 @@ $(function () {
       socket.emit("finishedSolutions");
       $("span").off();
       $(".button").off();
+      $(".button").addClass("disabled");
     });
 
     console.log("received");
