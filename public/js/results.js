@@ -13,6 +13,30 @@ function formatTime(minutes, seconds) {
   return str;
 }
 
+// Function for creating tables in the .pdf
+function voteTable(data, columns) {
+    var body = [];
+
+    body.push(columns);
+
+    data.forEach(function(row) {
+        var dataRow = [];
+
+        columns.forEach(function(column) {
+            dataRow.push(row[column].toString());
+        })
+
+        body.push(dataRow);
+    });
+
+    return {
+      table: {
+        headerRows: 1,
+        body
+      }
+    };
+}
+
 //add msg to candidates
 function makeLi(msg){
   var html =  $("<li class='card'><div id = 'colorBar'></div><div id = 'textBox'><p><span id='" + msg.id + "'>" + msg.idea + "</span></p></div></li>");
@@ -130,7 +154,47 @@ $(function () {
   });
 
   socket.on("genPDF", function () {
-    // INSERT PDF GEN CODE HERE - QUINN
 
+    console.log("pdf testing time");
+
+    // Example text for testing .pdf download
+    // Need to change example to work with real JSON
+    session = {"names":["Peter","Kenan","Teddy","Will","Quinn"],
+            "problems":[
+            {problem: "problem1", votes: 1}, 
+            {problem: "problem2", votes: 2}, 
+            {problem: "problem3", votes: 8}
+            ],
+            "solutions":[
+            {solution: "solution1", votes: 5},
+            {solution: "solution2", votes: 11},
+            {solution: "solution3", votes: 0}
+            ],
+            "statement":"Convert a JSON to .pdf"
+    };
+
+    // Need to decide on JSON implementation
+
+
+    // pdfmake code
+    var pdfDoc = {
+      content: [
+        {text: 'DesignStorm Session Report\n\n', bold: true, fontSize: 30},
+
+        {text: 'Participants:', bold: true, fontSize: 16},
+        session.names,
+    
+        {text: '\n\nPhase One: Problems', bold: true, fontSize: 14},
+        voteTable(session.problems, ['problem','votes']),
+      
+        {text: '\n\nPhase Two: Solutions', bold: true, fontSize: 14},
+        voteTable(session.solutions, ['solution','votes']),
+      
+        {text: '\n\nPhase Three: Mission Statement', bold: true, fontSize: 14},
+        session.statement 
+      ]
+    }
+
+      pdfMake.createPdf(pdfDoc).download('test.pdf');
   });
 });
