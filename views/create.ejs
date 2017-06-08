@@ -4,6 +4,8 @@
     <title>DesignStorm</title>
     <meta charset="utf-8">
     <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/animate.css">
+    <link rel="stylesheet" href="css/create.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
     <script src="/socket.io/socket.io.js"></script>
@@ -11,25 +13,28 @@
 
   </head>
   <body>
-    <div id="container">
-      <h1>DesignStorm</h1>
+    <div id="navbar">
+      <img id="navlogo" src="/img/logo-small.png">
     </div>
-    <div>
-      <h2>A quick Description</h2>
-      <p>Its as easy as 1.2.3. just put in the time for your group's
-        brainstorming rounds and begin reaping the benefits of DesignStorm!</p>
-    </div>
-    <div class="container" style="align:center;">
-      <h3>Time for each Round</h3>
-      <form id="duration" action="/session" method="get">
-        <span>Min</span>
-        <input form="duration" type="number" id = "min" name="min"  min="0" max="60">
-        <span>Seconds</span>
-        <input form="duration" type="number" id="sec" name="sec" min="0" max="60">
-        <span>Theme of creation</span>
-        <input form="duration" type="text" id="theme" name="theme">
-        <input type="submit" value="Submit">
-      </form>
+    <div id = "subtitle" class="animated fadeInUp">
+      <h1 id = "instructions">Instructions</h1><hr>
+      <div id = "contents">
+        <p id = "intro">DesignStorm is a new and intuitive way to implement <i><u>Design Thinking</u></i> methodology without the hassel.
+        <br><br>
+        Let's get started by calibrating for your personal brainstorming experience!</p><br>
+        <div id = "settings">
+          <p class = "whiteText">Time for each Round:</p>
+          <form id="duration" action="/session" method="get">
+            <!-- <span class = "whiteText">Minutes:</span> -->
+            <input form="duration" type="number" class = "inp" id = "min" name="min"  min="0" max="60" placeholder="minutes"><br>
+            <!-- <span class = "whiteText">Seconds</span> -->
+            <input form="duration" type="number" class = "inp" id="sec" name="sec" min="0" max="60" placeholder="seconds"><br>
+            <!-- <span class = "whiteText">Theme of <creation</span> -->
+            <input form="duration" type="text" class = "inp" id="theme" name="theme" placeholder="mission statement"><br>
+            <input class = "button" type="submit" value="Submit">
+          </form>
+        </div>
+      </div>
     </div>
   </body>
 </html>
