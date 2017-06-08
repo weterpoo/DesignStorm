@@ -42,7 +42,7 @@ $(function () {
     $("#ideas").append(html);
     $(html)[0].scrollIntoView();
   });
-  
+
   var max = 3000;
   var isFirstTick = true;
   socket.on("tick solutions", function (msg) {
@@ -73,12 +73,12 @@ $(function () {
     return false;
   });
 
-
+  var num_votes = 0;
   var votes = [];
   socket.on("vote on solutions", function () {
     $(".button").click(function (e) {
       e.preventDefault();
-      socket.emit("finished voting on solutions");
+      socket.emit("finishedSolutions");
       $("span").off();
     });
 
@@ -108,7 +108,7 @@ $(function () {
     });
   });
 
-  socket.on("move to results", function () {
+  socket.on("go to results", function () {
     window.location.replace("/results");
   });
 });

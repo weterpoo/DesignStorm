@@ -11,7 +11,6 @@ $(function () {
     var min = parseInt($('input')[0].value);
     var sec = parseInt($('input')[1].value);
     var theme = $('input')[2].value;
-    debugger;
     socket.emit("duration set", {'time':min*60+sec, 'theme':theme});
     //win.location.replace("/session");
   });

@@ -103,13 +103,13 @@ $(function () {
       $(this).click(function () {
         //grabb useful data
         var id = $(this).attr("id");
-        debugger;
+
         var idea = $(this).innerText;
         if (votes.indexOf(id) == -1 && num_votes < 3) {
           // cast vote event
           socket.emit("castVoteProblems", id, 1);
           num_votes++;
-          debugger;
+
           selected.push(idea);
           votes.push(id);
           //add class
@@ -120,7 +120,7 @@ $(function () {
           //remove the votes
           votes.splice(votes.indexOf(id), 1);
           num_votes--;
-          debugger;
+          
           selected.splice(selected.indexOf(idea), 1);
           //fire event to castVote
           socket.emit("castVoteProblems", id, -1);

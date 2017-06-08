@@ -202,10 +202,13 @@ io.on("connection", function (socket) {
     }
   });
 
-  socket.on("finished voting on solutions", function () {
+  socket.on("finishedSolutions", function () {
     numFinishedVotingOnSolutions++;
-
-    if (numFinishedVotingOnSolutions == numPeople) {
+    console.log("----------------------");
+    console.log(numPeople);
+    console.log(numFinishedVotingOnSolutions);
+    if (numFinishedVotingOnSolutions >= numPeople - 2) {
+      console.log("emit go2rez")
       io.emit("go to results");
     }
   });
