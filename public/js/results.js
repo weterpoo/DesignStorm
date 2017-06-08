@@ -13,6 +13,15 @@ function formatTime(minutes, seconds) {
   return str;
 }
 
+//add msg to candidates
+function makeLi(msg){
+  var html =  $("<li class='card'><div id = 'colorBar'></div><div id = 'textBox'><p><span id='" + msg.id + "'>" + msg.idea + "</span></p></div></li>");
+  $("#ideas").append(
+    html
+  );
+  $(html)[0].scrollIntoView();
+}
+
 $(function () {
   $("#idea-submission").submit(function () {
     var inp = $("#idea_field").val();
@@ -20,31 +29,26 @@ $(function () {
     if (inp == "") {
       return false;
     }
-    socket.emit("problemIdea", $("#idea_field").val());
+
+    socket.emit("featureIdea", $("#idea_field").val());
     $("#idea_field").val("");
-    return false;
   });
 
   //put the theme on the top of the page
-  socket.on("theme", function(theme){
-    $("h3").text(theme);
+  socket.on("theme_feat", function(theme){
+    $('h3')[0].innerText = theme;
   });
 
-  //connection settup
-  socket.on("connect", function () {
-    socket.emit("initProblems", socket.id);
+  // WHEN everyone complete load in data
+  socket.on("load_soln", function(soln){
+    makeLi(soln);
+    $("input#bb").prop("disabled", false);
   });
 
-  socket.on("update", function (msg) {
-    var html =  $("<li class='card'><div id = 'colorBar'></div><div id = 'textBox'><p><span id='" + msg.id + "'>" + msg.idea + "</span></p></div></li>");
-    $("#ideas").append(
-      html
-    );
-    $(html)[0].scrollIntoView();
-  });
+  //ticker
   var max = 3000;
   var isFirstTick = true;
-  socket.on("tick", function (msg) {
+  socket.on("tick_feat", function (msg) {
     if(isFirstTick){
       max = msg;
       isFirstTick = false;
@@ -74,13 +78,6 @@ $(function () {
     console.log("I made it");
     for (var i = 0; i < msg.length; i++) {
       $("#ideas").append(
-        // $("<li class='card' id='" + msg[i].id + "'>").append(
-        //   $('<div id="cont-r">').append(
-        //     $('<div id = "colorBar"></div>').attr('style','background-color:'+COLOR+';')
-        //   ).append(
-        //     $('<div id = "textBox">').text(msg[i].idea)
-        //   )
-        // )
         "<li class='card'><div id = 'colorBar'></div><div id = 'textBox'><p><span id='" + msg[i].id + "'>" + msg[i].idea +"</span></p></div></li>"
       );
     }
@@ -90,14 +87,11 @@ $(function () {
   var selected = [];
   var num_votes = 0;
   var votes = [];
-  socket.on("vote", function () {
-    $("#bb").css("display", "none");
-    $("#buttonContainer").css("display", "inline-block");
+  socket.on("vote_feat", function () {
     $(".button").click(function (e) {
       e.preventDefault();
-      socket.emit("finishedVoting", selected);
+      socket.emit("finishedVoting");
       $("span").off();
-      $(".button").off();
     });
 
     console.log("received");
@@ -106,14 +100,11 @@ $(function () {
       $(this).click(function () {
         //grabb useful data
         var id = $(this).attr("id");
-
         var idea = $(this).innerText;
         if (votes.indexOf(id) == -1 && num_votes < 3) {
           // cast vote event
-          socket.emit("castVoteProblems", id, 1);
+          socket.emit("castVoteFeats", id, 1);
           num_votes++;
-
-          selected.push(idea);
           votes.push(id);
           //add class
           $(this).addClass("span-selected");
@@ -123,10 +114,8 @@ $(function () {
           //remove the votes
           votes.splice(votes.indexOf(id), 1);
           num_votes--;
-          
-          selected.splice(selected.indexOf(idea), 1);
           //fire event to castVote
-          socket.emit("castVoteProblems", id, -1);
+          socket.emit("castVoteFeats", id, -1);
 
           $(this).removeClass("span-selected");
 
@@ -138,7 +127,9 @@ $(function () {
       });
     });
   });
-  socket.on("move to solutions", function () {
-    window.location.href = "/solutions";
+
+  socket.on("genPDF", function () {
+    // INSERT PDF GEN CODE HERE - QUINN
+
   });
 });

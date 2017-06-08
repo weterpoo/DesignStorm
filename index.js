@@ -22,6 +22,11 @@ app.get("/solutions", function (req, res) {
   res.render("solutions");
 });
 
+app.get("/results", function (req, res) {
+  res.render("results");
+});
+
+
 //start server
 var server = app.listen(port, function () {
   console.log("server started");
@@ -42,7 +47,7 @@ var problemVotes = {};
 var numPeople = 0;
 var numFinishedVoting = 0;
 var problemWinners = [];
-
+var duration_S = 0;
 var solutionVotes = {};
 var numReadyToBrainstormSolutions = 0;
 
@@ -68,6 +73,7 @@ io.on("connection", function (socket) {
      console.log(numPeople);
      numFinishedVoting = 0;
      problemWinners = [];
+     duration_S = 0;
 
      solutionVotes = {};
      numReadyToBrainstormSolutions = 0;
@@ -80,7 +86,8 @@ io.on("connection", function (socket) {
   socket.on("duration set", function (duration) {
     theme = duration.theme;
     io.emit("theme", theme);
-    time = duration.time;
+    duration_S = duration.time;
+    time = duration_S;
     if(!timerSet) {
       timer = setInterval(function () {
         io.emit("tick", time);
@@ -167,7 +174,7 @@ io.on("connection", function (socket) {
     if (numReadyToBrainstormSolutions == numPeople) {
       console.log(problemWinners);
       io.emit("begin brainstorming solutions", problemWinners);
-      time = 500 * 60;
+      time = duration_S;
       console.log("begin the ticking");
       var solutionTimer = setInterval(function () {
         io.emit("tick solutions", time);
@@ -195,11 +202,43 @@ io.on("connection", function (socket) {
     }
   });
 
-  socket.on("finished voting on solutions", function () {
+  socket.on("finishedSolutions", function () {
     numFinishedVotingOnSolutions++;
-
-    if (numFinishedVotingOnSolutions == numPeople) {
+    console.log("----------------------");
+    console.log(numPeople);
+    console.log(numFinishedVotingOnSolutions);
+    if (numFinishedVotingOnSolutions >= numPeople - 2) {
+      console.log("emit go2rez")
       io.emit("go to results");
     }
   });
+
+  //********************* FOR RESULTS PAGE    **********************
+  var winFeatures;
+  socket.on("solutionVotingComplete", function(){
+    //load with the winners
+    io.emit("load_soln", solnWinner);
+    timer = setInterval(function () {
+      io.emit("tick_feats", time);
+      time -= 1;
+
+      if (time < 0) {
+        clearInterval(timer);
+        io.emit("vote_feats");
+      }
+    }, 1000);
+
+  });
+  socket.on("castVoteFeats", function (id, amount) {
+    if (featureVotes[id] == undefined) {
+      featureVotes[id] = 1;
+    } else {
+      featureVotes[id] += amount;
+    }
+  });
+  socket.on("completeFeatVoting", function(){
+    io.emit("genPDF", winFeatures);
+  })
+
+
 });

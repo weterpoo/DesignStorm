@@ -43,28 +43,27 @@ $(function () {
     $(html)[0].scrollIntoView();
   });
 
+  var max = 3000;
   var isFirstTick = true;
   socket.on("tick solutions", function (msg) {
     console.log("ticking");
+
+    if(isFirstTick){
+      max = msg;
+      isFirstTick = false;
+    }
     if (msg <= 0) {
+      document.getElementById("myBar").style.width ="100%";
       $("#timer").text("Time's up");
       $("#idea_field").prop("disabled", true);
       return false;
     }
     //progress bar code
+    var bar = document.getElementById("myBar");
+    var width = parseInt((1.0-(msg/max))*100)
 
-    if (isFirstTick) {
-      var bar = document.getElementById("myBar");
-      var timeDelta = msg; // ms
-      var id = setInterval(frame, timeDelta);
-      var width = 1;
-      function frame() {
-          if (width <= 100) {
-              width += .1;
-              bar.style.width = width + '%';
-          }
-      }
-      isFirstTick = false;
+    if (width <= 100) {
+        bar.style.width = width + '%';
     }
 
     var minutes = parseInt(msg / 60);
@@ -74,11 +73,12 @@ $(function () {
     return false;
   });
 
+  var num_votes = 0;
   var votes = [];
   socket.on("vote on solutions", function () {
     $(".button").click(function (e) {
       e.preventDefault();
-      socket.emit("finished voting on solutions");
+      socket.emit("finishedSolutions");
       $("span").off();
     });
 
@@ -108,7 +108,7 @@ $(function () {
     });
   });
 
-  socket.on("move to results", function () {
+  socket.on("go to results", function () {
     window.location.replace("/results");
   });
 });
