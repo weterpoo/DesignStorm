@@ -82,7 +82,6 @@ io.on("connection", function (socket) {
 
      isProblems = true;
      problemVotes = {};
-     numPeople = 1;
      numFinishedVoting = 0;
 
      problemWinners = [];
