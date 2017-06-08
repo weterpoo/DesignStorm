@@ -52,12 +52,12 @@ $(function () {
 
     if (isFirstTick) {
       var bar = document.getElementById("myBar");
-      var timeDelta = msg*10; // ms
+      var timeDelta = msg; // ms
       var id = setInterval(frame, timeDelta);
       var width = 1;
       function frame() {
           if (width <= 100) {
-              width++;
+              width += .1;
               bar.style.width = width + '%';
           }
       }
