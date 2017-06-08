@@ -1,0 +1,59 @@
+.whiteText {
+  color: white;
+}
+#subtitle {
+  padding-top: 100px;
+  /*padding-left: 70px;*/
+  width: 65%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#instructions {
+  color: white;
+  font-size: 80px;
+}
+
+#intro {
+  color: white;
+}
+
+#contents {
+  width: 97%;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 27px;
+  padding-top: 35px;
+}
+
+#settings {
+  margin-left: 4%;
+  border-left: thin solid white;
+  padding-left: 30px;
+}
+
+#duration {
+  margin-left: 15px;
+  margin-top: 15px;
+}
+
+.inp {
+  height: 30px;
+  font-size: 20px;
+  width: 40%;
+  margin: 5px;
+  margin-left: 10px;
+  border-radius: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+#theme {
+  height: 40px;
+  width: 90%;
+}
+
+.button {
+  margin-left: 10px;
+  margin-top: 30px;
+}
