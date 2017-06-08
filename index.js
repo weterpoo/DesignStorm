@@ -409,6 +409,7 @@ io.on("connection", function (socket) {
         "problems": sortedProblemIdeas,
         "solutions": sortedSolutionIdeas,
         "features": sortedFeatureIdeas,
+        "statement": theme
       };
 
       console.log(pdf_dat);
