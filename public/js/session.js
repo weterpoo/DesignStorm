@@ -29,7 +29,7 @@ $(function () {
   });
 
   socket.on("update", function (msg) {
-    var html =  $("<li class='card'><div id = 'colorBar'></div><div id = 'textBox'><p><span>" + msg.idea +"</span></p></div></li>");
+    var html =  $("<li class='card'><div id = 'colorBar'></div><div id = 'textBox'><p><span id='" + msg.id + "'>" + msg.idea + "</span></p></div></li>");
     $("#ideas").append(
       html
     );
@@ -76,7 +76,7 @@ $(function () {
         //     $('<div id = "textBox">').text(msg[i].idea)
         //   )
         // )
-        "<li class='card'><div id = 'colorBar'></div><div id = 'textBox'><p><span>" + msg[i].idea +"</span></p></div></li>"
+        "<li class='card'><div id = 'colorBar'></div><div id = 'textBox'><p><span id='" + msg[i].id + "'>" + msg[i].idea +"</span></p></div></li>"
       );
     }
   });
@@ -84,9 +84,14 @@ $(function () {
   var num_votes = 0;
   var votes = [];
   socket.on("vote", function () {
+    $(".button").click(function (e) {
+      e.preventDefault();
+      socket.emit("finishedVoting");
+      $("span").off();
+    });
+
     console.log("received");
-    var cards = $(".card");
-    console.log(cards.length);
+    var cards = $("span");
     cards.each(function (index) {
       $(this).click(function () {
         var id = $(this).attr("id");
@@ -95,15 +100,31 @@ $(function () {
           socket.emit("castVoteProblems", id, 1);
           num_votes++;
           votes.push(id);
+          $(this).addClass("span-selected");
           console.log("voted");
         } else if (votes.indexOf(id) != -1) {
           votes.splice(votes.indexOf(id), 1);
           num_votes--;
           socket.emit("castVoteProblems", id, -1);
+          $(this).removeClass("span-selected");
+          console.log("removed");
         } else if (num_votes >= 3) {
-          console.log("You've already voted three times!");
+          alert("You've already voted three times!");
         }
+        console.log(votes);
       });
     });
+  });
+
+  socket.on("moveOn", function (msg) {
+    var ret = [];
+    for (var key in msg) {
+      if (msg.hasOwnProperty(key)) {
+        ret.push(encodeURIComponent(key) + '=' + encodeURIComponent(msg[key]));
+      }
+    }
+    var url = "/solutions?" + ret.join("&");
+
+    window.location.replace(url);
   });
 });
