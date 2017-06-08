@@ -23,6 +23,7 @@ function makeLi(msg){
 }
 
 $(function () {
+  socket.emit("ready to brainstorm features");
   $("#idea-submission").submit(function () {
     var inp = $("#idea_field").val();
 

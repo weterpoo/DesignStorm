@@ -76,10 +76,13 @@ $(function () {
   var num_votes = 0;
   var votes = [];
   socket.on("vote on solutions", function () {
+    $("#bb").css("display", "none");
+    $("#buttonContainer").css("display", "inline-block");
     $(".button").click(function (e) {
       e.preventDefault();
       socket.emit("finishedSolutions");
       $("span").off();
+      $(".button").off();
     });
 
     console.log("received");

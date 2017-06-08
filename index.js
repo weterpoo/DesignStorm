@@ -146,7 +146,7 @@ io.on("connection", function (socket) {
 
       var temp2 = [];
 
-      for (var i = 0; i < 5; i++) {
+      for (var i = 0; i < 3; i++) {
         if (temp[i] != undefined)
           temp2.push(temp[i][0]);
       }
@@ -207,8 +207,37 @@ io.on("connection", function (socket) {
     console.log("----------------------");
     console.log(numPeople);
     console.log(numFinishedVotingOnSolutions);
-    if (numFinishedVotingOnSolutions >= numPeople - 2) {
-      console.log("emit go2rez")
+    if (numFinishedVotingOnSolutions == numPeople) {
+      var temp = [];
+      console.log(solutionVotes);
+      for (var key in solutionVotes) {
+        if (solutionVotes.hasOwnProperty(key)) {
+          temp.push([key, solutionVotes[key]]);
+        }
+      }
+
+      temp.sort(function (a, b) { return b[1] - a[1] });
+
+      var temp = temp.slice(0, 5);
+
+      var temp2 = [];
+
+      for (var i = 0; i < 3; i++) {
+        if (temp[i] != undefined)
+          temp2.push(temp[i][0]);
+      }
+      console.log(temp2);
+      function findIdea(id) {
+        for (var i = 0; i < solutionIdeas.length; i++) {
+          if (id == solutionIdeas[i]["id"])
+            return solutionIdeas[i]["idea"];
+        }
+      }
+
+      for (var i = 0; i < temp2.length; i++) {
+        problemWinners.push(findIdea(temp2[i]));
+      }
+
       io.emit("go to results");
     }
   });
