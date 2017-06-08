@@ -42,7 +42,7 @@ var problemVotes = {};
 var numPeople = 0;
 var numFinishedVoting = 0;
 var problemWinners = [];
-
+var duration_S = 0;
 var solutionVotes = {};
 var numReadyToBrainstormSolutions = 0;
 
@@ -68,6 +68,7 @@ io.on("connection", function (socket) {
      console.log(numPeople);
      numFinishedVoting = 0;
      problemWinners = [];
+     duration_S = 0;
 
      solutionVotes = {};
      numReadyToBrainstormSolutions = 0;
@@ -80,7 +81,8 @@ io.on("connection", function (socket) {
   socket.on("duration set", function (duration) {
     theme = duration.theme;
     io.emit("theme", theme);
-    time = duration.time;
+    duration_S = duration.time;
+    time = duration_S;
     if(!timerSet) {
       timer = setInterval(function () {
         io.emit("tick", time);
@@ -167,7 +169,7 @@ io.on("connection", function (socket) {
     if (numReadyToBrainstormSolutions == numPeople) {
       console.log(problemWinners);
       io.emit("begin brainstorming solutions", problemWinners);
-      time = 5 * 60;
+      time = duration_S;
       console.log("begin the ticking");
       var solutionTimer = setInterval(function () {
         io.emit("tick solutions", time);

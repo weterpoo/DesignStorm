@@ -42,29 +42,28 @@ $(function () {
     $("#ideas").append(html);
     $(html)[0].scrollIntoView();
   });
-
+  
+  var max = 3000;
   var isFirstTick = true;
   socket.on("tick solutions", function (msg) {
     console.log("ticking");
+
+    if(isFirstTick){
+      max = msg;
+      isFirstTick = false;
+    }
     if (msg <= 0) {
+      document.getElementById("myBar").style.width ="100%";
       $("#timer").text("Time's up");
       $("#idea_field").prop("disabled", true);
       return false;
     }
     //progress bar code
+    var bar = document.getElementById("myBar");
+    var width = parseInt((1.0-(msg/max))*100)
 
-    if (isFirstTick) {
-      var bar = document.getElementById("myBar");
-      var timeDelta = msg; // ms
-      var id = setInterval(frame, timeDelta);
-      var width = 1;
-      function frame() {
-          if (width <= 100) {
-              width += .1;
-              bar.style.width = width + '%';
-          }
-      }
-      isFirstTick = false;
+    if (width <= 100) {
+        bar.style.width = width + '%';
     }
 
     var minutes = parseInt(msg / 60);
@@ -73,6 +72,7 @@ $(function () {
     $("#timer").text(formatTime(minutes, seconds));
     return false;
   });
+
 
   var votes = [];
   socket.on("vote on solutions", function () {
